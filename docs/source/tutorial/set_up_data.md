@@ -3,14 +3,14 @@
 In this section, we discuss the data set-up phase, which is the second part of the [standard development workflow](./spaceflights_tutorial.md#kedro-project-development-workflow). The steps are as follows:
 
 * Add datasets to your `data/` folder, according to [data engineering convention](../faq/faq.md#what-is-data-engineering-convention)
-* Register the datasets with the Data Catalog in `conf/base/catalog.yml`, which is the registry of all data sources available for use by the project. This ensures that your code is reproducible when it references datasets in different locations and/or environments.
+* Register the datasets with the Data Catalog in the `conf/base/catalog.yml` file, which is the registry of all data sources available for use by the project. This ensures that your code is reproducible when it references datasets in different locations and/or environments.
 
 You can find further information about [the Data Catalog](../data/data_catalog.md) in specific documentation covering advanced usage.
 
 
 ## Add your datasets to `data`
 
-The spaceflights tutorial makes use of fictional datasets of companies shuttling customers to the Moon and back. You will use the data to train a model to predict the price of shuttle hire. However, before you get to train the model, you will need to prepare the data for model building by creating a model input table.
+The spaceflights tutorial makes use of fictional datasets of companies that shuttle customers to the Moon and back. You will use the data to train a model to predict the price of shuttle hire. However, before you can train the model, you must create a model input table to prepare the data for model building.
 
 The spaceflight tutorial has three files and uses two data formats: `.csv` and `.xlsx`. Download and save the files to the `data/01_raw/` folder of your project directory:
 
@@ -76,19 +76,19 @@ wget -O data\01_raw\shuttles.xlsx https://kedro-org.github.io/kedro/shuttles.xls
 
 ## Register the datasets
 
-You now need to register the datasets so they can be loaded by Kedro. All Kedro projects have a `conf/base/catalog.yml` file, and you register each dataset by adding a named entry into the `.yml` file. The entry should include the following:
+Next, register the datasets so Kedro can load them. All Kedro projects have a `conf/base/catalog.yml` file; to register each dataset, add a named entry into the `.yml` file. The entry should include the following:
 
 * File location (path)
 * Parameters for the given dataset
 * Type of data
 * Versioning
 
-Kedro supports a number of different data types, and those supported can be found in the API documentation. Kedro uses [`fssspec`](https://filesystem-spec.readthedocs.io/en/latest/) to read data from a variety of data stores including local file systems, network file systems, cloud object stores and HDFS.
+Kedro supports a number of different data types - details of these are included in the API documentation. Kedro uses [`fssspec`](https://filesystem-spec.readthedocs.io/en/latest/) to read data from a variety of data stores, including local file systems, network file systems, cloud object stores and HDFS.
 
 
 ### `csv`
 
-For the spaceflights data, first register the `csv` datasets by adding this snippet to the end of the `conf/base/catalog.yml` file:
+For the spaceflights data, first add this snippet to the end of the `conf/base/catalog.yml` file to register the `csv` datasets:
 
 ```yaml
 companies:
@@ -108,12 +108,12 @@ companies.head()
 ```
 
 ```{note}
-If this is the first `kedro` command you have executed in the project, you will be asked whether you wish to opt into [usage analytics](https://github.com/quantumblacklabs/kedro-telemetry). Your decision is recorded in the `.telemetry` file so that subsequent calls to `kedro` in this project do not ask you again.
+If this is the first `Kedro` command you have executed in the project, you will be asked whether you want to opt into [usage analytics](https://github.com/quantumblacklabs/kedro-telemetry). Your decision is recorded in the `.telemetry` file so that subsequent calls to `Kedro` in this project do not ask you again.
 ```
 
-The command loads the dataset named `companies` (as per top-level key in `catalog.yml`) from the underlying filepath `data/01_raw/companies.csv` into the variable `companies`, which is of type `pandas.DataFrame`. The `head` method from `pandas` then displays the first five rows of the DataFrame.
+The command loads the dataset named `companies` (as per top-level key in the `catalog.yml` file) from the underlying filepath `data/01_raw/companies.csv` into the variable `companies`, which is of type `pandas.DataFrame`. The `head` method from `pandas` then displays the first five rows of the DataFrame.
 
-When you have finished, close `ipython` session as follows:
+When you have finished, close the `ipython` session:
 
 ```python
 exit()
@@ -121,7 +121,7 @@ exit()
 
 ### `xlsx`
 
-Now register the `xlsx` dataset by adding this snippet to the end of the `conf/base/catalog.yml` file:
+Now add this snippet to the end of the `conf/base/catalog.yml` file to register the `xlsx` dataset:
 
 ```yaml
 shuttles:
@@ -133,7 +133,7 @@ shuttles:
 
 ```{note}
 
- The `load_args` are passed to the `pd.read_excel` method as [keyword arguments](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html); although not specified here, `save_args` would be passed to the [`pd.DataFrame.to_excel` method](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_excel.html).
+ The `load_args` are passed to the `pd.read_excel` method as [keyword arguments](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html); although not specified here, `save_args` are passed to the [`pd.DataFrame.to_excel` method](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_excel.html).
 ```
 
 To test that everything works as expected, load the dataset within a _new_ `kedro ipython` session and display its first five rows:
@@ -142,7 +142,7 @@ To test that everything works as expected, load the dataset within a _new_ `kedr
 shuttles = catalog.load("shuttles")
 shuttles.head()
 ```
-When you have finished, close `ipython` session as follows:
+When you have finished, close the `ipython` session:
 
 ```python
 exit()
